@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Read-only IAM Role for EC2, S3, and other AWS services
+
+Resources:
+  ReadOnlyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ReadOnlyAccessRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+      Path: /
+
+Outputs:
+  RoleName:
+    Description: Name of the IAM role with read-only access
+    Value: !Ref ReadOnlyRole
+
+  RoleArn:
+    Description: ARN of the IAM role
+    Value: !GetAtt ReadOnlyRole.Arn
